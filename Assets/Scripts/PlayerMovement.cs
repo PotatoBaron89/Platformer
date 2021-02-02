@@ -10,8 +10,12 @@ public class PlayerMovement : MonoBehaviour
      {
          var horizontal = Input.GetAxis("Horizontal") * _speed;
          var rigidbody2D = GetComponent<Rigidbody2D>();
-         rigidbody2D.velocity = new Vector2(horizontal, rigidbody2D.velocity.y);
 
+         if (Mathf.Abs(horizontal) >= 1)   // maths.abs (absolute) changes val to an absolute value, so it has no positive or negative value.
+         {
+             rigidbody2D.velocity = new Vector2(horizontal, rigidbody2D.velocity.y);
+         }
+         
          var animator = GetComponent<Animator>();
          bool walking = horizontal != 0;
          animator.SetBool("Walk", walking);
