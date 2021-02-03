@@ -8,6 +8,9 @@ public class Fly : MonoBehaviour
     [SerializeField] Vector2 _direction = Vector2.up;
     [SerializeField] float _travelDistance = 2;
     [SerializeField] private float _speed = 1.25f;
+
+    private BoxCollider2D bc;
+    private Rigidbody2D rb;
     
 
     void Start()
@@ -25,6 +28,17 @@ public class Fly : MonoBehaviour
         {
             transform.position = _startPosition + (_direction.normalized * _travelDistance);
             _direction *= -1;  // time itself by negative one to make it move down instead
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        print("check");
+        var player = col.GetComponent<Player>();
+        if (player != null)
+        {
+            player.ResetToStart();
+            
         }
     }
 }
