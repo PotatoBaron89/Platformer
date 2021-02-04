@@ -501,6 +501,10 @@ PrefabInstance:
       propertyPath: _jumpVelocity
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1037105114, guid: c8a990f8eaa341244b69d59f7d050c47, type: 3}
+      propertyPath: _maxJumpDuration
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 3050407639752197361, guid: c8a990f8eaa341244b69d59f7d050c47, type: 3}
       propertyPath: m_RootOrder
       value: 2
