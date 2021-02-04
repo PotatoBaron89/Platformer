@@ -30,15 +30,4 @@ public class Fly : MonoBehaviour
             _direction *= -1;  // time itself by negative one to make it move down instead
         }
     }
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        print("check");
-        var player = col.GetComponent<Player>();
-        if (player != null)
-        {
-            player.ResetToStart();
-            
-        }
-    }
 }

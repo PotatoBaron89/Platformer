@@ -4,12 +4,16 @@ namespace Core {
 public class PlayerMovement : MonoBehaviour
     {
     [SerializeField] private int _speed = 6;
-    [SerializeField] private int _jumpHeight = 200;
+    [SerializeField] private int _jumpHeight = 900;
+    [SerializeField] private int _maxJumps = 2;
+
+    private int _jumpsRemaining;
 
     Vector3 _startPosition;
     void Start()
     {
         _startPosition = transform.position;
+        _jumpsRemaining = _maxJumps;
     }
 
         void Update()
@@ -32,9 +36,10 @@ public class PlayerMovement : MonoBehaviour
                 spriteRenderer.flipX = horizontal < 0;
              }
 
-             if (Input.GetButtonDown("Jump"))
+             if (Input.GetButtonDown("Jump") && _jumpsRemaining > 0)
              {
                  rigidbody2D.AddForce(Vector2.up * _jumpHeight);
+                 _jumpsRemaining--;
              }
         }
 
