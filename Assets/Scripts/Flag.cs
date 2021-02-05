@@ -16,6 +16,13 @@ public class Flag : MonoBehaviour
         var animator = GetComponent<Animator>();
         animator.SetTrigger("Raise");
 
+        StartCoroutine(LoadAfterDelay());
+       
+    }
+
+    private IEnumerator LoadAfterDelay()  // https://youtu.be/5aF6VclGp_4?t=298
+    {
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(_sceneName);
     }
 }
