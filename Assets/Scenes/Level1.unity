@@ -223,11 +223,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6176829836236670650, guid: 70842dfde54e2b948b600a53cb13ae23, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.5
+      value: -8.5
       objectReference: {fileID: 0}
     - target: {fileID: 6176829836236670650, guid: 70842dfde54e2b948b600a53cb13ae23, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.042
+      value: 9.042
       objectReference: {fileID: 0}
     - target: {fileID: 6176829836236670650, guid: 70842dfde54e2b948b600a53cb13ae23, type: 3}
       propertyPath: m_LocalPosition.z
@@ -862,7 +862,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619008041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -44.5, y: 10, z: 0}
+  m_LocalPosition: {x: -35.5, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1898,8 +1898,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd75525f8c29b1143913a5d8fd2ae7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _downSprite: {fileID: 21300000, guid: 1b1ee9dbfd79fcf428a39a2509c183b8, type: 3}
-  _onEnter:
+  _pressedSprite: {fileID: 21300000, guid: 1b1ee9dbfd79fcf428a39a2509c183b8, type: 3}
+  _onPressed:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2054770854}
@@ -1913,6 +1913,21 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+  _onReleased:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2054770854}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!61 &1371454327
 BoxCollider2D:
@@ -2751,7 +2766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6176829836236670650, guid: 70842dfde54e2b948b600a53cb13ae23, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -49.627544
+      value: -40.627544
       objectReference: {fileID: 0}
     - target: {fileID: 6176829836236670650, guid: 70842dfde54e2b948b600a53cb13ae23, type: 3}
       propertyPath: m_LocalPosition.y
