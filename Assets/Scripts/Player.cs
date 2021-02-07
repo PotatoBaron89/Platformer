@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private int _speed = 6;
-    [SerializeField] private int _jumpVelocity = 3;
-    [SerializeField] private int _maxJumps = 2;
+        [Header("Movement")]
+    [SerializeField] int _speed = 1;
+    [SerializeField] float _slipFactor = 1;
+        [Header("Jump")]
+    [SerializeField] int _jumpVelocity = 3;
+    [SerializeField] int _maxJumps = 2;
     [SerializeField] Transform _feet;
-    [SerializeField] private float _downPull = 5;
+    [SerializeField] float _downPull = 5;
     [SerializeField] float _maxJumpDuration = 0.1f;
     
     Vector3 _startPosition;
@@ -21,6 +24,7 @@ public class Player : MonoBehaviour
     Animator _animator;
     SpriteRenderer _spriteRenderer;
     bool _isGrounded;
+    bool _isOnSlipperySurface;
 
 
     void Start()
@@ -36,8 +40,12 @@ public class Player : MonoBehaviour
     {
         UpdateIsGrounded();
         ReadHorizontalInput();
-        MoveHorizontal();
-
+        
+        if (_isOnSlipperySurface)
+            SlipHorizontal();
+        else
+            MoveHorizontal();
+        
         UpdateAnimator();
         UpdateSpriteDirection();
 
@@ -68,17 +76,16 @@ public class Player : MonoBehaviour
         _jumpsRemaining = _maxJumps;
     }
 
+    private bool ShouldContinueJump()
+    {
+        return Input.GetButton("Jump") && _jumpTimer <= _maxJumpDuration;
+    }
     private void ContinueJump()
     {
         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpVelocity);
         _fallDuration = 0;
     }
-
-    private bool ShouldContinueJump()
-    {
-        return Input.GetButton("Jump") && _jumpTimer <= _maxJumpDuration;
-    }
-
+    
     private void Jump()
     {
         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpVelocity);
@@ -92,10 +99,22 @@ public class Player : MonoBehaviour
         return Input.GetButtonDown("Jump") && _jumpsRemaining > 0;
     }
 
-    private void MoveHorizontal()
+    void MoveHorizontal()
     {
-        if (Mathf.Abs(_horizontal) >= 1) // maths.abs (absolute) changes val to an absolute value, so it has no positive or negative value.
-            _rigidbody2D.velocity = new Vector2(_horizontal, _rigidbody2D.velocity.y);
+        //if (Mathf.Abs(_horizontal) >= 1) // maths.abs (absolute) changes val to an absolute value, so it has no positive or negative value.
+        //    _rigidbody2D.velocity = new Vector2(_horizontal, _rigidbody2D.velocity.y);
+
+        _rigidbody2D.velocity = new Vector2(_horizontal * _speed, _rigidbody2D.velocity.y);
+    }
+
+    void SlipHorizontal()
+    {
+        var desiredVelocity = new Vector2(_horizontal * _speed, _rigidbody2D.velocity.y);
+        var smoothedVelocity = Vector2.Lerp(
+            _rigidbody2D.velocity,
+            desiredVelocity,
+            Time.deltaTime / _slipFactor);
+        _rigidbody2D.velocity = smoothedVelocity;
     }
 
     private void ReadHorizontalInput()
@@ -121,12 +140,19 @@ public class Player : MonoBehaviour
     {
         var hit = Physics2D.OverlapCircle(_feet.position, 0.01f, LayerMask.GetMask("Default"));
         _isGrounded = hit != null;
+
+        if (hit != null)
+            _isOnSlipperySurface = hit.CompareTag("Slippery");
+        else
+            _isOnSlipperySurface = false;
+        
     }
 
     internal void ResetToStart()
     {
         transform.position = _startPosition;
     }
+
 
 
 }
