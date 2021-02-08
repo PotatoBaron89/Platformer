@@ -33,7 +33,6 @@ public class Slime : MonoBehaviour
     {
         Debug.DrawRay(sensor.position, Vector2.down * 0.1f, Color.red);
         
-
         var result = Physics2D.Raycast(sensor.position, Vector2.down, 0.1f);
         if (result.collider == null)
             TurnAround();
@@ -51,12 +50,23 @@ public class Slime : MonoBehaviour
         spriteRenderer.flipX = _direction > 0;
     }
 
-    void OnCollisionEnter2D(Collision col)
+    void OnCollisionEnter2D(Collision2D col)  //https://youtu.be/g0bpVqwwTSc?t=58
     {
         var player = col.collider.GetComponent<Player>();
         if (player == null)
             return;
+
+        Vector2 normal = col.contacts[0].normal;
+        //Debug.Log($"Normal = {normal}");
+
+        if (normal.y <= -0.5)
+            Die();
         else
             player.ResetToStart();
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
