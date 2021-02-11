@@ -30,7 +30,7 @@ public class Slime : MonoBehaviour
             ScanSensor(_rightSensor);
         }
     }
-
+    
     private void ScanSensor(Transform sensor)
     {
         Debug.DrawRay(sensor.position, Vector2.down * 0.1f, Color.red);
@@ -51,7 +51,7 @@ public class Slime : MonoBehaviour
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.flipX = _direction > 0;
     }
-
+    
     void OnCollisionEnter2D(Collision2D col)  //https://youtu.be/g0bpVqwwTSc?t=58
     {
         var player = col.collider.GetComponent<Player>();
@@ -67,7 +67,7 @@ public class Slime : MonoBehaviour
             player.ResetToStart();
     }
 
-    IEnumerator Die()  // https://youtu.be/a3OFVselfsU
+    IEnumerator Die()                                                // https://youtu.be/a3OFVselfsU
     {
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = _deadSprite;
