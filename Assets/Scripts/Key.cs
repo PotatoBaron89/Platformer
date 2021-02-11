@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    //public bool HasGoldKey = false;
+    [SerializeField]  KeyLock _keyLock;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,7 +17,7 @@ public class Key : MonoBehaviour
             keyTransform.localPosition = Vector3.up;
         }
         var keylock = collision.GetComponent<KeyLock>();
-        if (keylock != null)
+        if (keylock == _keyLock && keylock == _keyLock)
         {
             keylock.Unlock();
             Destroy(gameObject);
