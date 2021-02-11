@@ -11,17 +11,31 @@ public class FallingPlatform : MonoBehaviour
     Coroutine _coRoutine;
     Vector3 _initialPosition;
     
-    [SerializeField] float _minWiggleX = -1.75f;
-    [SerializeField] float _maxWiggleX = 1.75f;
-    [SerializeField] float _minWiggleY = -0.05f;
-    [SerializeField] float _maxWiggleY = 0.05f;
-    [SerializeField] float _rateofDescent = 3f;
+    [Header("Core")]
+    [Tooltip("Time in seconds before the platform falls.")]
+    [Range(0.1f,5f)][SerializeField] float _fallAfterSeconds = 1;
+    [Tooltip("How fast the platform should fall. -10 to match player.")]
+    [Range(2f,25f)][SerializeField] float _rateofDescent = 3f;
+    
+    [Tooltip("Reset Wiggle timer when no players are on the platform. Will prevent platform falling.")]
+    [SerializeField] bool _resetTimerWhenEmpty = false;
+    [Header("Wiggle Amount")]
+    [Range(-0.25f,-.001f)][SerializeField] float _minWiggleX = -1.75f;
+    [Range(0.25f,0.001f)][SerializeField] float _maxWiggleX = 1.75f;
+    [Range(-0.25f,-.001f)][SerializeField] float _minWiggleY = -0.05f;
+    [Range(0.25f,0.001f)][SerializeField] float _maxWiggleY = 0.05f;
+
+    private float wiggleTimer;
+    
+     
     bool _falling;
+    
 
 
     void Start()
     {
         _initialPosition = transform.position;
+        wiggleTimer = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,9 +57,8 @@ public class FallingPlatform : MonoBehaviour
     {
         Debug.Log("Waiting to wiggle");
         yield return new WaitForSeconds(0.25f);
-        Debug.Log("Wiggling");
-        float wiggleTimer = 0;
-        while (wiggleTimer < 1)
+        
+        while (wiggleTimer < _fallAfterSeconds)
         {
             float randomX = UnityEngine.Random.Range(_minWiggleX, _maxWiggleX);
             float randomY = UnityEngine.Random.Range(_minWiggleY, _maxWiggleY);
@@ -63,7 +76,6 @@ public class FallingPlatform : MonoBehaviour
         
         {
             allColliders.enabled = false;
-            
         }
 
         while (fallTimer < 3)
@@ -88,8 +100,11 @@ public class FallingPlatform : MonoBehaviour
         if (_playersInTrigger.Count == 0)
         {
             PlayerInside = false;
-            StopCoroutine(WiggleThenFall());
+            StopCoroutine(_coRoutine);
+            if (_resetTimerWhenEmpty == true)
+                wiggleTimer = 0;
         }
+        
         
     }
 }

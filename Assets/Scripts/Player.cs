@@ -139,7 +139,6 @@ public class Player : MonoBehaviour
         bool walking = _horizontal != 0;
         _animator.SetBool("Walk", walking);
         _animator.SetBool("Jump", ShouldContinueJump());
-
     }
 
     void UpdateIsGrounded()
@@ -151,7 +150,6 @@ public class Player : MonoBehaviour
             _isOnSlipperySurface = hit.CompareTag("Slippery");
         else
             _isOnSlipperySurface = false;
-        
     }
 
     internal void ResetToStart()
@@ -164,6 +162,5 @@ public class Player : MonoBehaviour
     {
         _rigidbody2D.position = position;
         _rigidbody2D.velocity = Vector2.zero;
-
     }
 }
