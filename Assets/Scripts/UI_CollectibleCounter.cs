@@ -1,17 +1,18 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_CollectibleCounter : MonoBehaviour
 {
-    Text _text;
+    TMP_Text _text;
 
     void Start()
     {
-        _text = GetComponent<Text>();
+        _text = GetComponent<TMP_Text>();
     }
 
     void Update()
     {
-        _text.text = Coin.CoinsCollected.ToString();
+        //_text.text = Coin.CoinsCollected.ToString();      < less performant method
+        _text.SetText(Coin.CoinsCollected.ToString());
     }
 }
