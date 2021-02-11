@@ -12,7 +12,6 @@ public class UI_CollectibleCounter : MonoBehaviour
 
     void Update()
     {
-        //_text.text = Coin.CoinsCollected.ToString();      < less performant method
         _text.SetText(Coin.CoinsCollected.ToString());
     }
 }
