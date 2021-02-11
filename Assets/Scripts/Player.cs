@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -155,9 +156,14 @@ public class Player : MonoBehaviour
 
     internal void ResetToStart()
     {
-        transform.position = _startPosition;
+        _rigidbody2D.position = _startPosition;
     }
 
 
+    internal void TeleportTo(Vector3 position)
+    {
+        _rigidbody2D.position = position;
+        _rigidbody2D.velocity = Vector2.zero;
 
+    }
 }
