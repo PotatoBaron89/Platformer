@@ -5,24 +5,18 @@ using UnityEngine.Events;
 
 public class Collectible : MonoBehaviour
 {
-    List <Collector> _collectors = new List<Collector>();
+    //List <Collector> _collectors = new List<Collector>();
+    public event Action OnPickedUp; // https://youtu.be/QjvqySSZGxg?t=150
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         var player = other.GetComponents<Player>();
         if (player == null)
             return;
-        
+
         gameObject.SetActive(false);
-        foreach (var collector in _collectors)
-        {
-            collector.ItemPickedUp();
-        }
-        
+        OnPickedUp?.Invoke();
     }
 
-    public void AddCollector(Collector collector)
-    {
-        _collectors.Add(collector);
-    }
+
 }
