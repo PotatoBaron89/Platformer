@@ -18,7 +18,7 @@ public class Door : MonoBehaviour
 
     [ContextMenu("Open Door")]
     
-    void Open()
+    public void Open()
     {
         _rendererMid.sprite = _openMid;
         _rendererTop.sprite = _openTop;
@@ -50,7 +50,9 @@ public class Door : MonoBehaviour
         var player = collision.GetComponent<Player>();
         if (player != null && _exit != null)
         {
-            player.TeleportTo(_exit.transform.position);
+            StartCoroutine(player.TeleportTo(_exit.transform.position));
+            //player.TeleportTo(_exit.transform.position + new Vector3(2,0,0));
         }
     }
+    
 }

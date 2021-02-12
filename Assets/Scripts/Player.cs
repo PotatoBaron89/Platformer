@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] float _maxJumpDuration = 0.1f;
     [Header("Misc")]
     [SerializeField] float _deathDelay = 1.5f;
+    [SerializeField] private float _teleportCD = 3f;
     
     //[SerializeField]  SpriteRenderer _rendererDead;
     
@@ -35,11 +36,12 @@ public class Player : MonoBehaviour
     SpriteRenderer _spriteRenderer;
     bool _isGrounded;
     bool _isOnSlipperySurface;
-    [SerializeField] float _deathSpiralAmount = 550;
-    [SerializeField] float _deathSmooth = 3;
+    
     private string _jumpButton;
     private string _horizontalAxis;
     private int layerMask;
+    private bool TeleportonCD;
+    
 
     public int PlayerNumber => _playerNumber;
 
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour
         _jumpButton = $"P{_playerNumber}Jump";
         _horizontalAxis = $"P{_playerNumber}Horizontal";
         layerMask = LayerMask.GetMask("Default");
+        TeleportonCD = false;
     }
 
     void Update()
@@ -173,10 +176,29 @@ public class Player : MonoBehaviour
 
 
 
-    internal void TeleportTo(Vector3 position)
+    /*internal void TeleportTo(Vector3 position)        original implementation
     {
-        _rigidbody2D.position = position;
-        _rigidbody2D.velocity = Vector2.zero;
+        if (TeleportonCD == false)
+        {
+            TeleportonCD = true;
+            _rigidbody2D.position = position;
+            _rigidbody2D.velocity = Vector2.zero;
+        }
+        
+    }*/
+
+    public IEnumerator TeleportTo(Vector3 position)
+    {
+        if (TeleportonCD == false)
+        {
+            TeleportonCD = true;
+            _rigidbody2D.position = position;
+            _rigidbody2D.velocity = Vector2.zero;
+        }
+
+        yield return new WaitForSeconds(_teleportCD);
+        TeleportonCD = false;
+
     }
     
     internal void ResetToStart()
