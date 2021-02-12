@@ -9,7 +9,7 @@ public class KillOnEnter : MonoBehaviour
         if (player != null)
         {
             player.ResetToStart();
-
+            print("You should be dead");
         }
     }
 }

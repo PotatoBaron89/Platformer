@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
@@ -16,8 +18,13 @@ public class Player : MonoBehaviour
     [SerializeField] Transform _feet;
     [SerializeField] float _downPull = 5;
     [SerializeField] float _maxJumpDuration = 0.1f;
+    [Header("Misc")]
+    [SerializeField] float _deathDelay = 1.5f;
+    
+    //[SerializeField]  SpriteRenderer _rendererDead;
     
     Vector3 _startPosition;
+    
 
     int _jumpsRemaining;
     float _fallDuration;
@@ -28,6 +35,12 @@ public class Player : MonoBehaviour
     SpriteRenderer _spriteRenderer;
     bool _isGrounded;
     bool _isOnSlipperySurface;
+    [SerializeField] float _deathSpiralAmount = 550;
+    [SerializeField] float _deathSmooth = 3;
+    private string _jumpButton;
+    private string _horizontalAxis;
+    private int layerMask;
+
     public int PlayerNumber => _playerNumber;
 
 
@@ -38,6 +51,10 @@ public class Player : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _jumpButton = $"P{_playerNumber}Jump";
+        _horizontalAxis = $"P{_playerNumber}Horizontal";
+        layerMask = LayerMask.GetMask("Default");
     }
 
     void Update()
@@ -82,7 +99,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldContinueJump()
     {
-        return Input.GetButton($"P{_playerNumber}Jump") && _jumpTimer <= _maxJumpDuration;
+        return Input.GetButton(_jumpButton) && _jumpTimer <= _maxJumpDuration;
     }
     private void ContinueJump()
     {
@@ -100,7 +117,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldStartJump()
     {
-        return Input.GetButtonDown($"P{_playerNumber}Jump") && _jumpsRemaining > 0;
+        return Input.GetButtonDown(_jumpButton) && _jumpsRemaining > 0;
     }
 
     void MoveHorizontal()
@@ -123,7 +140,7 @@ public class Player : MonoBehaviour
 
     private void ReadHorizontalInput()
     {
-        _horizontal = Input.GetAxis($"P{_playerNumber}Horizontal") * _speed;
+        _horizontal = Input.GetAxis(_horizontalAxis) * _speed;
     }
 
     private void UpdateSpriteDirection()
@@ -143,7 +160,8 @@ public class Player : MonoBehaviour
 
     void UpdateIsGrounded()
     {
-        var hit = Physics2D.OverlapCircle(_feet.position, 0.01f, LayerMask.GetMask("Default"));
+        
+        var hit = Physics2D.OverlapCircle(_feet.position, 0.01f, layerMask);
         _isGrounded = hit != null;
 
         if (hit != null)
@@ -152,15 +170,23 @@ public class Player : MonoBehaviour
             _isOnSlipperySurface = false;
     }
 
-    internal void ResetToStart()
-    {
-        _rigidbody2D.position = _startPosition;
-    }
+
 
 
     internal void TeleportTo(Vector3 position)
     {
         _rigidbody2D.position = position;
         _rigidbody2D.velocity = Vector2.zero;
+    }
+    
+    internal void ResetToStart()
+    {
+        StartCoroutine(PlayerReset());
+    }
+
+    IEnumerator PlayerReset()
+    {
+        yield return new WaitForSeconds(_deathDelay);
+        _rigidbody2D.position = _startPosition;
     }
 }
