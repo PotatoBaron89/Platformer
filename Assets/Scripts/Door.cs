@@ -27,31 +27,23 @@ public class Door : MonoBehaviour
         if (_canvas != null)
             _canvas.enabled = false;
     }
-
     private void Start()
     {
         _requiredCoins = 3;
     }
-
     void Update()
     {
         if (_open == false && Coin.CoinsCollected >= _requiredCoins)
-        {
             Open();
-            print("Coins: " + Coin.CoinsCollected + " required coins: " + _requiredCoins);
-        }
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (_open == false)
             return;
-        
         var player = collision.GetComponent<Player>();
         if (player != null && _exit != null)
         {
             StartCoroutine(player.TeleportTo(_exit.transform.position));
-            //player.TeleportTo(_exit.transform.position + new Vector3(2,0,0));
         }
     }
     
