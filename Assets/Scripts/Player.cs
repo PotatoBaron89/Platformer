@@ -25,7 +25,6 @@ public class Player : MonoBehaviour
     //[SerializeField]  SpriteRenderer _rendererDead;
     
     Vector3 _startPosition;
-    
 
     int _jumpsRemaining;
     float _fallDuration;
@@ -59,7 +58,7 @@ public class Player : MonoBehaviour
         layerMask = LayerMask.GetMask("Default");
         TeleportonCD = false;
     }
-
+    
     void Update()
     {
         UpdateIsGrounded();
