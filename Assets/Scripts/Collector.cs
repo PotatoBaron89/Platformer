@@ -48,7 +48,7 @@ public class Collector : MonoBehaviour
 
 
     
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = Color.gray;
         foreach (var collectible in _collectibles)
@@ -60,7 +60,7 @@ public class Collector : MonoBehaviour
             
             Gizmos.DrawLine(transform.position, collectible.transform.position);
         }
-    }
+    }*/
     
     
 }
