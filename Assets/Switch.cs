@@ -8,6 +8,8 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Switch : MonoBehaviour
 {
+    [SerializeField] ToggleDirection _startingDirection = ToggleDirection.Centre;
+    
     [SerializeField] Sprite _spriteLeft;
     [SerializeField] Sprite _spriteRight;
     [SerializeField] Sprite _spriteCentre;
@@ -15,7 +17,8 @@ public class Switch : MonoBehaviour
     [SerializeField] private UnityEvent _onRight;
     [SerializeField] private UnityEvent _onCentre;
     SpriteRenderer _spriteRenderer;
-    private bool isRight;
+    
+    bool isRight;
     ToggleDirection _currentDirection;
     
 
@@ -25,10 +28,10 @@ public class Switch : MonoBehaviour
         Centre,
         Right
     }
-    
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        SetTogglePosition(_startingDirection, true);
     }
 
 
@@ -47,15 +50,15 @@ public class Switch : MonoBehaviour
         bool playerWalkingLeft = playerRigidbody.velocity.x < 0;
 
         if (isRight && playerWalkingRight)
-            SetTogglePosition(ToggleDirection.Right);
+            SetTogglePosition(ToggleDirection.Right, false);
         
         else if (!isRight && playerWalkingLeft)
-            SetTogglePosition(ToggleDirection.Left);
+            SetTogglePosition(ToggleDirection.Left, false);
     }
 
-    void SetTogglePosition(ToggleDirection direction)
+    void SetTogglePosition(ToggleDirection direction, bool force = false)
     {
-        if (_currentDirection == direction)
+        if (force == false && _currentDirection == direction)
             return;
         
         _currentDirection = direction;

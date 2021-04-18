@@ -13,6 +13,7 @@ public class Door : MonoBehaviour
     [SerializeField] int _requiredCoins;
     [SerializeField] Door _exit;
     [SerializeField] private Canvas _canvas;
+    
 
     private bool _open;
 
